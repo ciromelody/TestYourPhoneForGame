@@ -10,6 +10,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.LinearLayout;
+
+import org.altervista.ultimaprovaprimadi.ciromelody.testyourphoneforgame.implement.Cerchio;
+import org.altervista.ultimaprovaprimadi.ciromelody.testyourphoneforgame.implement.Pallina;
 
 public class GameActivityTest extends AppCompatActivity {
 
@@ -19,8 +23,12 @@ public class GameActivityTest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewGame=new FinestraDiGioco(this);
-        //setContentView(R.layout.activity_game);
-        setContentView( viewGame);
+
+        setContentView(R.layout.activity_game);
+        LinearLayout linear=findViewById(R.id.linearlayout);
+        linear.addView(viewGame );
+
+        //setContentView( viewGame);
 
     }
 
@@ -53,11 +61,14 @@ public class GameActivityTest extends AppCompatActivity {
         String durataFrame;
         Paint paint;
         boolean giocoFinito;
+        Pallina pallina;
+
 
         int x=0;
         int rigaDrawText=10;
             public FinestraDiGioco(Context context) {
                 super(context);
+                pallina=new Pallina(context);
                 holder = getHolder();
                paint=new Paint();
             }
@@ -77,6 +88,8 @@ public class GameActivityTest extends AppCompatActivity {
                 if(x>255){x=0;}
                 x++;
 
+
+
         }
         private void disegnaGioco() {
             if (!holder.getSurface().isValid()) {
@@ -86,6 +99,9 @@ public class GameActivityTest extends AppCompatActivity {
             Canvas canvas = holder.lockCanvas();
                    paint.setTextSize(55);
                    canvas.drawRGB(161, 161, 161);
+                   pallina.setCanvas(canvas);
+                   pallina.disegnaPallina(canvas,x,x);
+
                    paint.setColor(Color.argb(255, 255, 0, 0));
                 if((tempoRimasto)>77)
                             {  rigaDrawText=89;
