@@ -18,14 +18,18 @@ import org.altervista.ultimaprovaprimadi.ciromelody.testyourphoneforgame.impleme
 public class GameActivityTest extends AppCompatActivity {
 
     FinestraDiGioco viewGame;
-
+    LinearLayout linear;
+    int larghezzaPixel,altezzaPixel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewGame=new FinestraDiGioco(this);
+
 
         setContentView(R.layout.activity_game);
-        LinearLayout linear=findViewById(R.id.linearlayout);
+        linear=findViewById(R.id.linearlayout);
+        larghezzaPixel=linear.getResources().getDisplayMetrics().widthPixels;
+         altezzaPixel=linear.getResources().getDisplayMetrics().heightPixels;
+        viewGame=new FinestraDiGioco(this,larghezzaPixel,altezzaPixel);
         linear.addView(viewGame );
 
         //setContentView( viewGame);
@@ -64,11 +68,13 @@ public class GameActivityTest extends AppCompatActivity {
         Pallina pallina;
 
 
-        int x=0;
+        int x=0,larghezzaFinestraGioco,altezzaFinestraGioco;
         int rigaDrawText=10;
-            public FinestraDiGioco(Context context) {
+            public FinestraDiGioco(Context context,int larghezzaFinestraGioco,int altezzaFinestraGioco) {
                 super(context);
-                pallina=new Pallina(context);
+                this.larghezzaFinestraGioco=larghezzaFinestraGioco;
+                this.altezzaFinestraGioco=altezzaFinestraGioco;
+                pallina=new Pallina(context,larghezzaFinestraGioco,altezzaFinestraGioco);
                 holder = getHolder();
                paint=new Paint();
             }
@@ -87,6 +93,7 @@ public class GameActivityTest extends AppCompatActivity {
         private void aggiornaGioco() {
                 if(x>255){x=0;}
                 x++;
+                pallina.aggiorna();
 
 
 
@@ -99,8 +106,8 @@ public class GameActivityTest extends AppCompatActivity {
             Canvas canvas = holder.lockCanvas();
                    paint.setTextSize(55);
                    canvas.drawRGB(161, 161, 161);
-                   pallina.setCanvas(canvas);
-                   pallina.disegnaPallina(canvas,x,x);
+
+                   pallina.disegnaPallina(canvas);
 
                    paint.setColor(Color.argb(255, 255, 0, 0));
                 if((tempoRimasto)>77)

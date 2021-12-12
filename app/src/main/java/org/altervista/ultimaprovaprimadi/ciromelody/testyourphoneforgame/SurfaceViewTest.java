@@ -55,7 +55,7 @@ public class SurfaceViewTest extends AppCompatActivity {
                     continue;
 
                 Canvas canvas = holder.lockCanvas();
-                canvas.drawRGB(255, 0, 0);
+                canvas.drawRGB(161, 161, 161);
                 holder.unlockCanvasAndPost(canvas);
             }
         }

@@ -1,7 +1,12 @@
 package org.altervista.ultimaprovaprimadi.ciromelody.testyourphoneforgame;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -11,7 +16,7 @@ public class AndroidBasicsStarter extends ListActivity {
     String tests[] = { "LifeCycleTest", "AndroidMyPhoneHardTest","SingleTouchTest", "MultiTouchTest",
             "KeyTest", "AccelerometerTest", "AssetsTest",
             "ExternalStorageTest", "SoundPoolTest", "MediaPlayerTest",
-            "FullScreenTest", "RenderViewTest", "ShapeTest", "BitmapTest",
+            "FullScreenTest", "GameActivityTest","RenderViewTest", "ShapeTest", "BitmapTest",
             "FontTest", "SurfaceViewTest" };
 
     @Override
@@ -34,6 +39,22 @@ public class AndroidBasicsStarter extends ListActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public void onBackPressed() {
+
+        if(isNetworkAvailable()){
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://ultimaprovaprimadi.altervista.org/le-mie-app-android/"));
+            startActivity(browserIntent);
+
+        }
+        super.onBackPressed();
+    }
+    protected  boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
 
