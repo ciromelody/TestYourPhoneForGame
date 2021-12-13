@@ -16,6 +16,7 @@ public class Pallina {
     float centroX,centroY;
     int        larghezzaCanvas,altezzaCanvas;
     boolean scendi;
+    boolean vaiAdestra;
     public Pallina(Context context,int larghezzaCanvas,int altezzaCanvas) {
         paint=new Paint();
         this.larghezzaCanvas=larghezzaCanvas;
@@ -23,13 +24,15 @@ public class Pallina {
 
     }
     public void aggiorna(){
+        if(vaiAdestra){centroX=centroX+3;
+                     if (centroX>larghezzaCanvas-100){vaiAdestra=false;}
+         }else {centroX=centroX-3;
+                if(centroX<100){vaiAdestra=true;}}
 
         if(scendi){ centroY=centroY+10;
-                    centroX=larghezzaCanvas/2;
-                   if (centroY>larghezzaCanvas-100){scendi=false;}
+                    if (centroY>larghezzaCanvas-100){scendi=false;}
         }else {centroY=centroY-10;
-                      centroX=larghezzaCanvas/2;
-                 if (centroY<100){scendi=true;}
+                      if (centroY<100){scendi=true;}
                                    }
 
 
