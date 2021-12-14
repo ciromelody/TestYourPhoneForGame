@@ -1,43 +1,36 @@
-package org.altervista.ultimaprovaprimadi.ciromelody.testyourphoneforgame;
-
-import androidx.appcompat.app.AppCompatActivity;
+package org.altervista.ultimaprovaprimadi.ciromelody.testyourphoneforgame.implement;
 
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
 import android.widget.TextView;
 
-public class CompassHolderTest extends AppCompatActivity implements SensorEventListener {
-TextView textView;
-float yaw;
-float pitch;
-float roll;
-Sensor mAccelerometro;
-Sensor mMagnetometro;
+public class CompassHolder implements SensorEventListener {
+    TextView textView;
+    float yaw;
+    float pitch;
+    float roll;
+    Sensor mAccelerometro;
+    Sensor mMagnetometro;
     SensorManager manager;
-//Sensor mSensorManager;
-float[] mUltimaAccelerazione =new float[3];
-float[] mUltimaMagnetometro =new float[3];
-float[] mR=new float[9];
-float[] mOrientamento =new float[3];
-boolean mAccelerazioneSettata=false;
-boolean mMagnetometroSettato=false;
-StringBuilder builder = new StringBuilder();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        textView = new TextView(this);
-        setContentView(textView);
+    //Sensor mSensorManager;
+    float[] mUltimaAccelerazione =new float[3];
+    float[] mUltimaMagnetometro =new float[3];
+    float[] mR=new float[9];
+    float[] mOrientamento =new float[3];
+    boolean mAccelerazioneSettata=false;
+    boolean mMagnetometroSettato=false;
+    StringBuilder builder = new StringBuilder();
+    public CompassHolder(Context context, TextView textView) {
+        this.textView=textView;
         builder.append("controllo sensore accelerometro e magnetico"); textView.setText(builder.toString());
-         manager =(SensorManager)this.getSystemService(Context.SENSOR_SERVICE);
+        manager =(SensorManager)context.getSystemService(Context.SENSOR_SERVICE);
         if (manager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() == 0) {
             builder.append("non è presente il sensore accelerometro"); textView.setText(builder.toString());
         } else {
-           mAccelerometro = manager.getSensorList(
+            mAccelerometro = manager.getSensorList(
                     Sensor.TYPE_ACCELEROMETER).get(0);
             if (!manager.registerListener(this, mAccelerometro,
                     SensorManager.SENSOR_DELAY_GAME)) {
@@ -58,7 +51,6 @@ StringBuilder builder = new StringBuilder();
 
         mMagnetometro=manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-
     }
 
     @Override
@@ -73,11 +65,11 @@ StringBuilder builder = new StringBuilder();
         if(event.sensor==mMagnetometro){
             System.arraycopy(event.values,0,mUltimaMagnetometro,0,event.values.length);
             mMagnetometroSettato=true;
-          //  builder.append(" è presente il sensore magnetotermico"); textView.setText(builder.toString());
+            //  builder.append(" è presente il sensore magnetotermico"); textView.setText(builder.toString());
         }else {//builder.append("Non è presente il sensore magnetotermico"); textView.setText(builder.toString());
-                                           }
+        }
 
-         if(mAccelerazioneSettata&&mMagnetometroSettato){
+        if(mAccelerazioneSettata&&mMagnetometroSettato){
             SensorManager.getRotationMatrix(mR,null,mUltimaAccelerazione,mUltimaMagnetometro);
             SensorManager.getOrientation(mR,mOrientamento);
             yaw=mOrientamento[0];
@@ -106,7 +98,6 @@ StringBuilder builder = new StringBuilder();
     public float getRoll() {
         return roll;
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 

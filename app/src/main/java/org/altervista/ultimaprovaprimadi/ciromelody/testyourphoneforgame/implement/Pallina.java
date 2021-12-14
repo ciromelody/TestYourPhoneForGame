@@ -24,19 +24,24 @@ public class Pallina {
 
     }
     public void aggiorna(){
-        if(vaiAdestra){centroX=centroX+3;
-                     if (centroX>larghezzaCanvas-100){vaiAdestra=false;}
-         }else {centroX=centroX-3;
-                if(centroX<100){vaiAdestra=true;}}
 
-        if(scendi){ centroY=centroY+10;
-                    if (centroY>larghezzaCanvas-100){scendi=false;}
-        }else {centroY=centroY-10;
-                      if (centroY<100){scendi=true;}
-                                   }
-
+        muoviPallina();
 
     }
+
+    private void muoviPallina() {
+        if(vaiAdestra){centroX=centroX+3;
+            if (centroX>larghezzaCanvas-100){vaiAdestra=false;}
+        }else {centroX=centroX-3;
+            if(centroX<100){vaiAdestra=true;}}
+
+        if(scendi){ centroY=centroY+10;
+            if (centroY>altezzaCanvas-100){scendi=false;}
+        }else {centroY=centroY-10;
+            if (centroY<100){scendi=true;}
+        }
+    }
+
     public void disegnaPallina(Canvas canvas){
 
         int radius;
