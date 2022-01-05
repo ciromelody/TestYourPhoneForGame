@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -29,6 +30,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import static android.os.Build.VERSION.SDK_INT;
+
 public class ExternalStorageTest extends AppCompatActivity {
     final private int REQUEST_READ_EXTERNAL_STORAGE = 123;
     final private int REQUEST_WRITE_EXTERNAL_STORAGE = 123;
@@ -42,14 +47,22 @@ public class ExternalStorageTest extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (Build.VERSION.SDK_INT >= 29) {
              aggiungiView();
-            String androidcambia="dalla versione 26 non è piu' possibile scrivere o leggere da un file,possiamo provare" +
-                    "con intent messi a disposizione del sistema android"+
+            String androidcambia="dalla versione 29 e' possibile scrivere o leggere da un file," +
+                    "con alcuni accorgimenti per la versione 29 dobbiamo inserire nel file manifest la seguente riga:" +
+                    " android:requestLegacyExternalStorage=\"true\" per la versione 30 e superiore dobbiamo avvalerci di un intent " +
+                    "particolare .Comunque google ci mette a disposizione anche degli intent standard" +
+                    " del sistema android"+
                     "Vedi:https://stackoverflow.com/questions/62782648/android-11-scoped-storage-permissions";
-            textView.setText("Something went wrong! " + "\n"+androidcambia);
+            textView.setText(" " + "\n"+androidcambia);
             textView1.setText("seconda riga di testo");
-
+            if(Utility.leggichiavefile(this,"SDK11 E SUPERIORE","PERMESSI_SCRITTURA",false)){
+                Utility.scrivilog(SDK_INT, "Scrivo senza chiedere più permessi");
+            }else {
+                requestPermission();
+            }
+            ReadExternalStorage();
             //chooseFile();
         }else {
 
@@ -318,6 +331,19 @@ public class ExternalStorageTest extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }}
+        // per sdk>= 30
+        if (requestCode == 2237) {
+            if (SDK_INT >= Build.VERSION_CODES.R) {
+                if (Environment.isExternalStorageManager()) {
+
+                    Utility.scrivilog(SDK_INT, "Versione sdk ha ottenuto i permessi di scrittura");
+                    Utility.Scrivichiavefile(this,"SDK11 E SUPERIORE","PERMESSI_SCRITTURA",true);
+                    Log.d("MOM","perform action");
+                } else {
+                    Toast.makeText(this, "Allow permission for storage access!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
         private String readTextFromUri(Uri uri) throws IOException {
@@ -335,6 +361,26 @@ public class ExternalStorageTest extends AppCompatActivity {
             parcelFileDescriptor.close();
             return stringBuilder.toString();
         }
+
+    private void requestPermission() {
+        if (SDK_INT > Build.VERSION_CODES.Q) {
+            try {
+
+                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.addCategory("android.intent.category.DEFAULT");
+                intent.setData(Uri.parse(String.format("package:%s",getApplicationContext().getPackageName())));
+                startActivityForResult(intent, 2237);
+            } catch (Exception e) {
+                Intent intent = new Intent();
+                intent.setAction(android.provider.Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivityForResult(intent, 2237);
+            }
+        } else {
+            //below android 11
+            ActivityCompat.requestPermissions(ExternalStorageTest.this, new String[]{WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_EXTERNAL_STORAGE );
+            ActivityCompat.requestPermissions(ExternalStorageTest.this, new String[]{READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE );
+        }
+    }
 
 
 

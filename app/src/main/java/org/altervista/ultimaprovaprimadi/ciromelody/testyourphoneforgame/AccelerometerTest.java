@@ -113,7 +113,7 @@ public class AccelerometerTest extends AppCompatActivity implements SensorEventL
         float f = sensorEvent.values[0];
         float f2 = sensorEvent.values[1];
         float f3 = sensorEvent.values[2];
-       // boolean1=true;
+       // boolean1 è falso solo alla prima chiamata
         if(boolean1){
             float abs = Math.abs(this.numerofloat1 - f);
             float abs2 = Math.abs(this.numerofloat2 - f2);
@@ -142,10 +142,10 @@ public class AccelerometerTest extends AppCompatActivity implements SensorEventL
                         calcolaAllelerazioneOrizVert(abs, abs2, abs3);
                         Log.d("TEST","sono passato da qui");
 
-
+                  // l'istruzione sotto ci dice che il telefono non ha accelerazioni di rilievo ,si è fermato
                 } else if (abs == 0.0f && abs2 == 0.0f && abs3 == 0.0f) {
                     if (this.int1 >= this.int2 && this.int1 >= this.int4) {
-                        Toast.makeText(getApplicationContext(), "Sensor Change horizontat", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "accelerazione orizzontale", Toast.LENGTH_SHORT).show();
                         if (sparo_suono != -1) {
                             soundPool.play(sparo_suono, 1, 1, 0, 0, 1);
                         }
@@ -154,18 +154,12 @@ public class AccelerometerTest extends AppCompatActivity implements SensorEventL
                         if (caricamento_suono != -1) {
                             soundPool.play(caricamento_suono, 1, 1, 0, 0, 1);
                         }
-                        Toast.makeText(getApplicationContext(), "Sensor Change vertical ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "accelerazione verticale ", Toast.LENGTH_SHORT).show();
                     } else if (this.int4 >= this.int1 && this.int4 >= this.int2) {
 
-                        Toast.makeText(getApplicationContext(), "Sensor Change forward ", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Accelerazione mista ", Toast.LENGTH_SHORT).show();
                     }
-                    try {
-                        //controllaseloScreenOnTelefonoinChiamata();
-                        // EseguiFlash();
-                        // Toast.makeText(getApplicationContext(), "change", Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Error. Responding to shake failed", Toast.LENGTH_LONG).show();
-                    }
+                    //azzero le variabili che mi servono per calcolare il tipo di accelerazione
                     this.int1 = 0;
                     this.int2 = 0;
                     this.int4 = 0;
@@ -175,9 +169,9 @@ public class AccelerometerTest extends AppCompatActivity implements SensorEventL
             } //inizialmente era 500
             }else if (uptimeMillis() - this.intlong2 > 500 && (abs > 0.0f || abs2 > 0.0f || abs3 > 0.0f)) {
 
-                     //controllaseloScreenOnTelefonoinChiamata();
+
                     Toast.makeText(getApplicationContext(), "Sensor Change intlong2 ", Toast.LENGTH_SHORT).show();
-                    // EseguiFlash();
+
                     this.boolean2 = true;
                     calcolaAllelerazioneOrizVert(abs, abs2, abs3);
                     this.intlong2 = uptimeMillis();

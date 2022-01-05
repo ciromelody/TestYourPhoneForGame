@@ -30,7 +30,7 @@ public class SoundPoolTest extends AppCompatActivity implements OnTouchListener 
 
         try {
             AssetManager assetManager = this.getAssets();
-            AssetFileDescriptor descriptor = assetManager.openFd("explosion-02.ogg");
+            AssetFileDescriptor descriptor = assetManager.openFd("caricamentofucile.wav");
             explosionId = soundPool.load(descriptor, 1);
         } catch (IOException e) {
             textView.setText("Couldn't load sound effect from asset, "

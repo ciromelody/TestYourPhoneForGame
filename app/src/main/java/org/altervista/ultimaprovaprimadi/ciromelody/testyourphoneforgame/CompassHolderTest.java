@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class CompassHolderTest extends AppCompatActivity implements SensorEventListener {
-TextView textView;
+ TextView textView;
 float yaw;
 float pitch;
 float roll;
@@ -26,12 +26,13 @@ float[] mOrientamento =new float[3];
 boolean mAccelerazioneSettata=false;
 boolean mMagnetometroSettato=false;
 StringBuilder builder = new StringBuilder();
-
+Long tempoPrecedente,tempoAttuale,tempoDifferenza;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         textView = new TextView(this);
         setContentView(textView);
+        tempoPrecedente=System.currentTimeMillis();
         builder.append("controllo sensore accelerometro e magnetico"); textView.setText(builder.toString());
          manager =(SensorManager)this.getSystemService(Context.SENSOR_SERVICE);
         if (manager.getSensorList(Sensor.TYPE_ACCELEROMETER).size() == 0) {
@@ -63,6 +64,7 @@ StringBuilder builder = new StringBuilder();
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+
         if(event.sensor==mAccelerometro){
             System.arraycopy(event.values,0,mUltimaAccelerazione,0,event.values.length);
             mAccelerazioneSettata=true;
@@ -84,14 +86,19 @@ StringBuilder builder = new StringBuilder();
             pitch=mOrientamento[1];
             roll=mOrientamento[2];
             //scrivi su riga di testo
-            builder.setLength(0);
-            builder.append("yaw: ");
-            builder.append( yaw);
-            builder.append(", pitch: ");
-            builder.append(pitch);
-            builder.append(", roll: ");
-            builder.append(roll);
-            textView.setText(builder.toString());
+             tempoAttuale=System.currentTimeMillis();
+             tempoDifferenza=tempoAttuale-tempoPrecedente;
+             if (tempoDifferenza>1000){
+                      builder.setLength(0);
+                      builder.append("yaw: ");
+                      builder.append( yaw);
+                      builder.append(", pitch: ");
+                      builder.append(pitch);
+                      builder.append(", roll: ");
+                      builder.append(roll);
+                      textView.setText(builder.toString());
+                      tempoPrecedente=tempoAttuale;
+             }
         }
 
     }
