@@ -26,7 +26,9 @@ android:maxSdkVersion="28"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WriteFileTest"></activity>
+        <activity android:name=".glbasics.GLPrimoTriangolo"></activity>
+        <activity android:name=".GLSurfaceViewTest" />
+        <activity android:name=".WriteFileTest" />
         <activity android:name=".ProvaBussola" />
         <activity android:name=".CompassHolderTest" />
         <activity android:name=".GameActivityTest" />
@@ -95,6 +97,23 @@ android:maxSdkVersion="28"
             android:name=".FontTest"
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:label="Surfaceview Test" />
+        <activity
+            android:name=".glbasics.GLBasicsStarter"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="GL Basic Starter" />
+        <activity
+            android:name=".glbasics.GLSurfaceViewTest"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="GL Surfaceview Test" />
+        <activity
+        android:name=".glbasics.GLGameTest"
+        android:configChanges="keyboard|keyboardHidden|orientation"
+        android:label="GL game Test" />
+        <activity
+            android:name=".glbasics.ColoredTriangleTest"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:label="GL Triangolo con colori" />
+
     </application>
 
 </manifest>

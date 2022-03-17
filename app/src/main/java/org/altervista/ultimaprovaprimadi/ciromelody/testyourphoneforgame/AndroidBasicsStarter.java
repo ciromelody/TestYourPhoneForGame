@@ -17,7 +17,7 @@ public class AndroidBasicsStarter extends ListActivity {
             "KeyTest", "AccelerometerTest","CompassHolderTest", "AssetsTest",
             "ExternalStorageTest", "SoundPoolTest", "MediaPlayerTest",
             "FullScreenTest", "GameActivityTest","RenderViewTest", "ShapeTest", "BitmapTest",
-            "FontTest", "SurfaceViewTest","ProvaBussola" ,"WriteFileTest"};
+            "FontTest", "SurfaceViewTest","ProvaBussola" ,"WriteFileTest","glbasics.GLBasicsStarter"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +36,7 @@ public class AndroidBasicsStarter extends ListActivity {
                     .forName("org.altervista.ultimaprovaprimadi.ciromelody.testyourphoneforgame." + testName);
             Intent intent = new Intent(this, clazz);
             startActivity(intent);
+            //finish();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
